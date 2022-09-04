@@ -17,6 +17,4 @@ python src/main.py --initial_start=2001-01-01 --end=2001-01-06 --system_time=200
 pytest tests
 ```
 
-The same data set is used as in the example, the answer to the questions is also provided in the docstrings of the function. 
-Apart from that the assumption is made that the only mean of the system time is calculated based on the 
-provided arguments, Nevertheless rolling over the whole series wouldn't require many changes.
+The same data set is used as in the example, the answer to the questions is also provided in the docstrings of the function.
