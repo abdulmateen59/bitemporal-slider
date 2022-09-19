@@ -1,4 +1,4 @@
-from bitemporal_slider import BitemporalSlider
+from src.bitemporal_slider import BitemporalSlider
 from src import ColumnName
 
 
