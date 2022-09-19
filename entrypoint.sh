@@ -1,6 +1,4 @@
-#!/bin/bash
-
-python3.10 usr/local/bin/bitemporal-slider --initial_start=2000-12-31 --end=2001-01-02 --system_time=2001-01-03 --sliding_steps=3 --sliding_delta=1
+python usr/local/bin/bitemporal-slider --initial_start=2000-12-31 --end=2001-01-02 --system_time=2001-01-03 --sliding_steps=3 --sliding_delta=1
 echo "**************************************************************************"
 python usr/local/bin/bitemporal-slider --initial_start=2001-01-01 --end=2001-01-03 --system_time=2001-01-03 --sliding_steps=3 --sliding_delta=2
 echo "**************************************************************************"

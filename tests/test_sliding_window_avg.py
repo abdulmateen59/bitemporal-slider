@@ -2,13 +2,10 @@ from datetime import datetime
 from datetime import timedelta
 from unittest import TestCase
 
-import pytest
+from src import ColumnName
 from src.bitemporal_moving_average import BitemporalMovingAverage
 from src.bitemporal_slider import BitemporalSlider
 from src.reader_writer import read_data
-
-from src import ColumnName
-
 
 
 class TestSlidingWindowAvg(TestCase):
@@ -17,25 +14,16 @@ class TestSlidingWindowAvg(TestCase):
     def test_compute_avg(self):
 
         expected_averages = [1.0, 1.5, 1.5, 3.0, 3.6]
-        actual_results = BitemporalMovingAverage(self.data,
-                                                 '2001-01-03',
-                                                 3,
-                                                 1)
+        actual_results = BitemporalMovingAverage(self.data, '2001-01-03', 3, 1)
         for result, average in zip(actual_results, expected_averages):
             self.assertEqual(average, result[2])
 
-        result = BitemporalMovingAverage(self.data,
-                                         '2001-01-07',
-                                         2,
-                                         1)
+        result = BitemporalMovingAverage(self.data, '2001-01-07', 2, 1)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0][2], 4.0)
         self.assertEqual(result[0][0], '2001-01-07')
 
-        result = BitemporalMovingAverage(self.data,
-                                         '2001-01-03',
-                                         1,
-                                         0)
+        result = BitemporalMovingAverage(self.data, '2001-01-03', 1, 0)
         self.assertEqual(result[0][0], '2001-01-03')
         self.assertEqual(result[0][2], 0.0)
 
@@ -48,18 +36,16 @@ class TestSlidingWindowAvg(TestCase):
                                                                     delta=sliding_delta,
                                                                     sys=system_date):
             self.assertEqual(provided_date.strftime('%Y-%m-%d'), system_date)
-            self.assertEqual(win_end, datetime.strptime(
-                system_date, '%Y-%m-%d').date() - timedelta(days=sliding_delta))
-            system_date = str(datetime.strptime(
-                system_date, '%Y-%m-%d').date() + timedelta(days=1))
+            self.assertEqual(win_end, datetime.strptime(system_date, '%Y-%m-%d').date() - timedelta(days=sliding_delta))
             self.assertLessEqual(len(slided_data), sliding_window)
+            system_date = str(datetime.strptime(system_date, '%Y-%m-%d').date() + timedelta(days=1))
 
     def test_bitemporal_slider(self):
 
-        param_input = [('2001-01-03', 1, 1), 
+        param_input = [('2001-01-03', 1, 1),
                        ('2001-01-03', 3, 1),
                        ('2001-01-03', 2, 3),
-                       ('2001-01-03', 1, 0), 
+                       ('2001-01-03', 1, 0),
                        ('2001-01-03', 9, 9),
                        ('2001-01-07', 1, 1),
                        ('2001-01-07', 1, 0)]

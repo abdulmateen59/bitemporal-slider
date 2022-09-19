@@ -10,11 +10,11 @@ The CSV file is written inside the container, the volume can be mounted to persi
 The following command can be used to run the package locally, output file will be written to data directory
 
 ```sh
-python src/main.py --initial_start=2001-01-01 --end=2001-01-06 --system_time=2001-01-07 --sliding_steps=4 --sliding_delta=1
+python src/main.py --initial_start=2001-01-01 --end=2001-01-06 --system_time=2001-01-03 --sliding_steps=3 --sliding_delta=1
 ```
 **Test Cases**
 ```sh
-pytest tests
+pytest tests -vvv
 ```
 
 The same data set is used as in the example, the answer to the questions is also provided in the docstrings of the function.
