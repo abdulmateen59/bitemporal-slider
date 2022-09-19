@@ -5,3 +5,5 @@ __pycache__
 *.pyc
 .vscode/*
 .idea/*
+data/output_*.csv
+log/log_*.log
