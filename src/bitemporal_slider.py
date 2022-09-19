@@ -30,7 +30,7 @@ class BitemporalSlider:
         :return: window with all dates
         """
 
-        if (period < 0) or (delta < 0):
+        if (period <= 0) or (delta < 0):
             raise RuntimeError("Sliding steps and delta cannot be negative...")
         start = current_date - timedelta(days=delta)
         return [start - timedelta(days=day) for day in reversed(range(period))]
