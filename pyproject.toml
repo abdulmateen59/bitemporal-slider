@@ -1,28 +1,26 @@
 [tool.poetry]
-name = "bitemporal-slider"
-version = "0.1.0"
-description = "Bitemporal sliding window average algorithm"
 authors = ["Abdul Mateen"]
+description = "Bitemporal sliding window average algorithm"
 license = "Apache-2.0"
-readme = "README.md"
+name = "bitemporal-slider"
 packages = [
-    { include = "src"}
+  {include = "src"},
 ]
+readme = "README.md"
+version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = "^3.10"
 argparse = "^1.4.0"
-pandas = "^1.4.3"
-loguru = "^0.6.0"
+python = "^3.10"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7"
-mypy = "^0.971"
 black = "^22.6.0"
+mypy = "^0.971"
+pytest = "^7"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
 
 [tool.black]
 line-length = 120
@@ -31,22 +29,22 @@ target-version = ['py310']
 [tool.mypy]
 allow_redefinition = false
 check_untyped_defs = true
-disallow_untyped_decorators = true
 disallow_any_explicit = true
 disallow_any_generics = true
 disallow_untyped_calls = true
+disallow_untyped_decorators = true
 ignore_errors = false
 ignore_missing_imports = true
 implicit_reexport = false
 local_partial_types = true
-strict_optional = true
-strict_equality = true
 no_implicit_optional = true
-warn_unused_ignores = true
-warn_redundant_casts = true
-warn_unused_configs = true
-warn_unreachable = true
+strict_equality = true
+strict_optional = true
 warn_no_return = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
 
 [tool.poetry.scripts]
 bitemporal-slider = "src.main:run"
