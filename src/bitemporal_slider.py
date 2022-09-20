@@ -13,7 +13,8 @@ class BitemporalSlider:
 
     """
 
-    _dateparser = lambda x: datetime.strptime(x, '%Y-%m-%d').date()  # TODO: E731 violated
+    def _dateparser(x): return datetime.strptime(
+        x, '%Y-%m-%d').date()  # TODO: E731 violated
 
     @staticmethod
     def get_lagged_dates(current_date: date,
@@ -55,13 +56,12 @@ class BitemporalSlider:
         Extracts the window for each system value based on the sliding steps and sliding delta
 
         ** Time Complexity **
-            The algorithm has a linear time complexity, details about the complexity can be found in the comment right
-            next to the code.
-
+            The algorithm has a time complexity of O(n) + O(m^5) -> O(n + m^5), n represents the sequence series and m
+            represents the window size. For complexity details, see the comment to the right of the code.
         ** Space Complexity **
-            The algorithm generates one result at a time for each system date, i.e., it does not store all values in
-            memory but generates them on the fly, nevertheless the child class still stores all the aggregated
-            results in the memory which make space complexity O(2N).
+            The algorithm generates one result for each system date, i.e. it does not store all values in memory,
+            but generates them on the fly. However, in order to store all values in the memory, O(N) is going to be the
+            space complexity.
 
         :param system: system dates
         :param valid:  valid dates
@@ -70,7 +70,7 @@ class BitemporalSlider:
         :param delta: Number of delayed days
         :param sys: Given system date
 
-        :returns: Iterable
+        :returns: Iterable, A tuple with system_date, window_end_date and a dict with all rolled date value pairs
         """
 
         system_date: date = cls._dateparser(sys)
@@ -78,10 +78,14 @@ class BitemporalSlider:
             system=system, valid=valid, data=data)
 
         while system_date <= system_seq[-1]:  # O(n)
-            window_dates: list[date] = BitemporalSlider.get_lagged_dates(system_date, period=window_size, delta=delta)  # O(n)
-            filtered_dates: set[date] = set(window_dates).intersection(valid_seq)  # O(min(n, m)) -> O(n)
-            filtered_date_idx:  list[int | None] = []
-            for x in filtered_dates:  # O(n^2) -> n corresponds to window size
+            window_dates: list[date] = BitemporalSlider.get_lagged_dates(
+                current_date=system_date,
+                period=window_size,
+                delta=delta)  # O(m) -> m represents the window
+            filtered_dates: set[date] = set(window_dates).intersection(
+                valid_seq)  # O(min(m, n)) -> O(m)
+            filtered_date_idx: list[int | None] = []
+            for x in filtered_dates:  # O(m^2)
                 index_pos_list = list(locate(valid_seq, lambda a: a == x))
                 filtered_date_idx.extend(
                     index for index in index_pos_list if system_date >= system_seq[index])
@@ -89,6 +93,6 @@ class BitemporalSlider:
             out = {element[1]: element[2]
                    for i, (index, element) in itertools.product(filtered_date_idx,
                                                                 enumerate(zip(system_seq, valid_seq, data_seq)))
-                   if i == index}  # O(n)
+                   if i == index}  # O(m)
             yield system_date, window_dates[-1], dict(zip(out.keys(), out.values()))
             system_date = system_date + timedelta(days=1)
