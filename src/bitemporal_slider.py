@@ -13,8 +13,7 @@ class BitemporalSlider:
 
     """
 
-    def _dateparser(x): return datetime.strptime(
-        x, '%Y-%m-%d').date()  # TODO: E731 violated
+    _dateparser = lambda x: datetime.strptime(x, '%Y-%m-%d').date()  # TODO: E731 violated
 
     @staticmethod
     def get_lagged_dates(current_date: date,
@@ -74,21 +73,18 @@ class BitemporalSlider:
         """
 
         system_date: date = cls._dateparser(sys)
-        valid_seq, system_seq, data_seq = cls.preprocess(
-            system=system, valid=valid, data=data)
+        valid_seq, system_seq, data_seq = cls.preprocess(system=system, valid=valid, data=data)
 
         while system_date <= system_seq[-1]:  # O(n)
             window_dates: list[date] = BitemporalSlider.get_lagged_dates(
-                current_date=system_date,
-                period=window_size,
-                delta=delta)  # O(m) -> m represents the window
-            filtered_dates: set[date] = set(window_dates).intersection(
-                valid_seq)  # O(min(m, n)) -> O(m)
+                                                                    current_date=system_date,
+                                                                    period=window_size,
+                                                                    delta=delta)  # O(m) -> m represents the window
+            filtered_dates: set[date] = set(window_dates).intersection(valid_seq)  # O(min(m, n)) -> O(m)
             filtered_date_idx: list[int | None] = []
             for x in filtered_dates:  # O(m^2)
                 index_pos_list = list(locate(valid_seq, lambda a: a == x))
-                filtered_date_idx.extend(
-                    index for index in index_pos_list if system_date >= system_seq[index])
+                filtered_date_idx.extend(index for index in index_pos_list if system_date >= system_seq[index])
 
             out = {element[1]: element[2]
                    for i, (index, element) in itertools.product(filtered_date_idx,
