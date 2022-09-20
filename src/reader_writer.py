@@ -39,7 +39,8 @@ def write_result(output: list[list[str | float]],
     """
     try:
         with open(f'{path}{filename}.csv', "w") as file:
+            file.write(f'{ColumnName.SYSTEM.value},{ColumnName.VALID.value},{ColumnName.DATA.value}' + '\n')
             for row in output:
-                file.write(f'{str(row[0])} {str(row[1])} {str(row[2])}' + '\n')
+                file.write(f'{str(row[0])},{str(row[1])},{str(row[2])}' + '\n')
     except IOError as E:
         logger.error(f"{type(E)}: {E}")
