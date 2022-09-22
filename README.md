@@ -16,5 +16,3 @@ python src/main.py --initial_start=2001-01-01 --end=2001-01-06 --system_time=200
 ```sh
 pytest tests -vvv
 ```
-
-The same data set is used as in the example, the answer to the questions is also provided in the docstrings of the function.
