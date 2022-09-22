@@ -2,7 +2,7 @@
 The solution is containerized, use the following command to see the output, and to change the 
 input refer to script `entrypoint.sh`
 ```sh
-docker build . -t othoz && docker run --rm -it othoz
+docker build . -t bt_slider && docker run --rm -it bt_slider
 ```
 The CSV file is written inside the container, the volume can be mounted to persist the output file.
 
